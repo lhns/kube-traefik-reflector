@@ -1,0 +1,17 @@
+apiVersion: v2
+name: kube-traefik-reflector
+description: A controller that mirrors Traefik policy CRDs (Middleware, TLSOption, ServersTransport) across namespaces, driven by an annotation on the source object.
+type: application
+# version and appVersion are overridden by CI at release time.
+version: 0.0.0
+appVersion: "0.0.0"
+home: https://github.com/lhns/kube-traefik-reflector
+sources:
+  - https://github.com/lhns/kube-traefik-reflector
+keywords:
+  - traefik
+  - middleware
+  - reflector
+  - cross-namespace
+maintainers:
+  - name: Pierre Kisters

@@ -1,0 +1,16 @@
+# Binaries
+/bin/
+/dist/
+*.exe
+
+# Test / coverage
+*.out
+cover.html
+
+# envtest assets
+/testbin/
+
+# Editor
+.idea/
+.vscode/
+*.swp

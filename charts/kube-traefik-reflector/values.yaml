@@ -1,0 +1,41 @@
+image:
+  repository: ghcr.io/lhns/kube-traefik-reflector
+  # Defaults to the chart appVersion when empty.
+  tag: ""
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+# Namespaces skipped during "*"/selector expansion. An explicitly named namespace
+# in a source's traefik-reflector/namespaces list is still honored.
+excludedNamespaces:
+  - kube-system
+  - kube-public
+  - kube-node-lease
+
+# How often to sweep for mirrors whose source object no longer exists (the backstop
+# for missed deletions, since the controller uses no finalizers).
+orphanSweepInterval: 10m
+
+# Leader election lets you run more than one replica safely (only one is active).
+leaderElection:
+  enabled: true
+
+serviceAccount:
+  create: true
+  name: ""
+
+rbac:
+  create: true
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 64Mi
+  limits:
+    memory: 128Mi
+
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
