@@ -92,7 +92,7 @@ func main() {
 		r := &controller.ReflectorReconciler{
 			Client:    mgr.GetClient(),
 			APIReader: mgr.GetAPIReader(),
-			Recorder:  mgr.GetEventRecorderFor("traefik-reflector"),
+			Recorder:  mgr.GetEventRecorderFor("traefik-reflector"), //nolint:staticcheck // SA1019: migrate to GetEventRecorder (events.k8s.io), separate change
 			Type:      rt,
 			Excluded:  excluded,
 		}

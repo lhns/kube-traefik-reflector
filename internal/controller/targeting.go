@@ -29,9 +29,9 @@ func (t TargetingSpec) HasTargeting() bool {
 func parseList(s string) (names []string, wildcard bool) {
 	for _, p := range strings.Split(s, ",") {
 		p = strings.TrimSpace(p)
-		switch {
-		case p == "":
-		case p == WildcardNamespaces:
+		switch p {
+		case "":
+		case WildcardNamespaces:
 			wildcard = true
 		default:
 			names = append(names, p)

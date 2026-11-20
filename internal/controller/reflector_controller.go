@@ -136,7 +136,7 @@ func (r *ReflectorReconciler) applyMirror(ctx context.Context, src *unstructured
 	}
 
 	mirror := buildMirror(src, targetNS)
-	return r.Patch(ctx, mirror, client.Apply, client.FieldOwner(FieldManager), client.ForceOwnership)
+	return r.Patch(ctx, mirror, client.Apply, client.FieldOwner(FieldManager), client.ForceOwnership) //nolint:staticcheck // SA1019: migrate to the typed apply configurations (client.Client.Apply), separate change
 }
 
 // deleteMirrors deletes this source's mirrors. If keep is non-nil, mirrors in a
