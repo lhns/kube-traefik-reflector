@@ -16,11 +16,11 @@ permissions:
 # A LITERAL group name: under workflow_call ${{ github.workflow }} is the caller's, so two called
 # workflows would share one group and cancel each other.
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}  # PER-REPO: a distinct literal per workflow file (ci-, e2e-, ...)
   cancel-in-progress: true
 
 env:
-  BINARY: /manager
+  BINARY: /manager             # PER-REPO: entrypoint binary inside the image
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
@@ -49,6 +49,7 @@ jobs:
           version: v3.16.3
       - run: helm lint charts/kube-traefik-reflector
 
+  # Go repos only (PER-REPO: absent in pv-reaper).
   go-version:
     runs-on: ubuntu-latest
     steps:
@@ -79,6 +80,7 @@ jobs:
           [ "$tc" = "$img" ] || echo "::warning::go.mod has toolchain go$tc, the Dockerfile golang:$img; bump the toolchain line"
           echo "OK: toolchain go$tc, golang:$img"
 
+  # Go repos that adopt golangci-lint (PER-REPO, see SPEC.md), with .golangci.yml from SPEC.md.
   lint:
     runs-on: ubuntu-latest
     needs: go-version
@@ -104,7 +106,7 @@ jobs:
           severity: CRITICAL,HIGH
           exit-code: '1'
           ignore-unfixed: true
-          skip-dirs: 'docs'
+          skip-dirs: 'docs'      # PER-REPO: oci-composer 'docs,test'
 
   # Both platforms, pushed by digest to a throwaway registry and checked with the release's own
   # script, so an arm64 break fails the PR rather than the release.
@@ -112,7 +114,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
+        include:                 # PER-REPO: one entry per image
           - image: kube-traefik-reflector
             build-args: ""
     services:
