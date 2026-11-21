@@ -5,6 +5,15 @@ All notable changes to this project are documented here. The format is based on
 [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Built with Go 1.26.11 on `distroless/static-debian13:nonroot`, both pinned by digest.
+- Dev builds are multi-arch (amd64 and arm64) and versioned `0.0.0-dev.g<sha>`
+  (was `0.0.0-dev.<sha>`), and are published from every branch, not only `main`.
+- Releases wait for CI, check each platform's binary architecture before tagging,
+  and attach the signed chart, SBOMs and checksums.
+
+### Security
+- `golang.org/x/net` v0.62.0 (CVE-2026-78661).
 
 ## [0.1.1] - 2026-10-22
 ### Security
