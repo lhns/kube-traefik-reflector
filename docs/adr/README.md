@@ -31,3 +31,4 @@ What follows — the wins and the costs.
 - [0007 — Secrets are not reflected; detect and warn](0007-secrets-delegated-detect-warn.md)
 - [0008 — Conflict guard: never clobber unmanaged resources](0008-conflict-guard.md)
 - [0009 — Distribution: multi-arch image + OCI Helm chart](0009-distribution.md)
+- [0010 — Release signing: cosign keyless, tagged releases only](0010-release-signing.md)
