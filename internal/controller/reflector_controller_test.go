@@ -178,7 +178,9 @@ func TestReconcile_ConflictSkipsUnmanaged(t *testing.T) {
 	src := middleware("authelia", "authelia", map[string]string{AnnNamespaces: "duckdb"})
 	// A user's own, unmanaged Middleware of the same name already lives in duckdb.
 	userOwned := middleware("duckdb", "authelia", nil)
-	unstructured.SetNestedField(userOwned.Object, "USER-OWNED", "spec", "forwardAuth", "address")
+	if err := unstructured.SetNestedField(userOwned.Object, "USER-OWNED", "spec", "forwardAuth", "address"); err != nil {
+		t.Fatal(err)
+	}
 
 	r, c, rec := newReconciler(src, userOwned, namespace("authelia", nil), namespace("duckdb", nil))
 	reconcileSource(t, r, "authelia", "authelia")
@@ -201,7 +203,9 @@ func TestReconcile_ConflictSkipsUnmanaged(t *testing.T) {
 
 func TestReconcile_MissingSecretWarnsButMirrors(t *testing.T) {
 	src := middleware("authelia", "authelia", map[string]string{AnnNamespaces: "duckdb"})
-	unstructured.SetNestedField(src.Object, "htpasswd", "spec", "basicAuth", "secret")
+	if err := unstructured.SetNestedField(src.Object, "htpasswd", "spec", "basicAuth", "secret"); err != nil {
+		t.Fatal(err)
+	}
 
 	r, c, rec := newReconciler(src, namespace("authelia", nil), namespace("duckdb", nil))
 	r.SecretExists = func(context.Context, string, string) (bool, error) { return false, nil } // secret absent

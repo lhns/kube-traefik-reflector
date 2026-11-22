@@ -1,0 +1,47 @@
+version: 2
+
+updates:
+  # PER-REPO: absent in pv-reaper (no Go).
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - go
+    groups:
+      # k8s.io/* and sigs.k8s.io/* move in lockstep (controller-runtime pins k8s.io versions).
+      kubernetes:
+        patterns:
+          - "k8s.io/*"
+          - "sigs.k8s.io/*"
+      go-deps:
+        patterns:
+          - "*"
+
+  # "/" covers .github/workflows only; the second entry adds the local composite actions
+  # (.github/actions/setup-go pins setup-go).
+  - package-ecosystem: "github-actions"
+    directories:
+      - "/"
+      - "/.github/actions/*"   # PER-REPO: absent in pv-reaper (no local actions)
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - github-actions
+
+  # Base images in the Dockerfile. A golang bump also needs go.mod's toolchain line moved: CI warns.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - docker
