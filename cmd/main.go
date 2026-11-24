@@ -31,6 +31,9 @@ func main() {
 		metricsAddr   string
 		probeAddr     string
 		enableLeader  bool
+		leaseDuration time.Duration
+		renewDeadline time.Duration
+		retryPeriod   time.Duration
 		excludedNS    string
 		sweepInterval time.Duration
 		showVersion   bool
@@ -38,6 +41,13 @@ func main() {
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "Address the metrics endpoint binds to.")
 	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "Address the health probe endpoint binds to.")
 	flag.BoolVar(&enableLeader, "leader-elect", false, "Enable leader election for controller manager.")
+	// Defaults match controller-runtime's. Slow API server storage (SQLite on an SD card) may need larger values.
+	flag.DurationVar(&leaseDuration, "leader-election-lease-duration", 15*time.Second,
+		"How long a non-leader waits before taking over an unrenewed lease.")
+	flag.DurationVar(&renewDeadline, "leader-election-renew-deadline", 10*time.Second,
+		"How long the leader keeps retrying to renew the lease before giving up (and exiting).")
+	flag.DurationVar(&retryPeriod, "leader-election-retry-period", 2*time.Second,
+		"How often leader election actions are retried.")
 	flag.StringVar(&excludedNS, "excluded-namespaces", strings.Join(controller.DefaultExcludedNamespaces, ","),
 		"Comma-separated namespaces skipped during '*'/selector expansion (explicit names still honored).")
 	flag.DurationVar(&sweepInterval, "orphan-sweep-interval", 10*time.Minute,
@@ -67,6 +77,9 @@ func main() {
 		Metrics:                metricsserver.Options{BindAddress: metricsAddr},
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeader,
+		LeaseDuration:          &leaseDuration,
+		RenewDeadline:          &renewDeadline,
+		RetryPeriod:            &retryPeriod,
 		LeaderElectionID:       "kube-traefik-reflector.lhns.de",
 	})
 	if err != nil {

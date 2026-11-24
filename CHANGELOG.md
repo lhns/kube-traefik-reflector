@@ -5,6 +5,11 @@ All notable changes to this project are documented here. The format is based on
 [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+### Added
+- Leader election timings are configurable: `--leader-election-lease-duration`,
+  `--leader-election-renew-deadline` and `--leader-election-retry-period` (defaults unchanged),
+  and the chart values `leaderElection.leaseDuration`, `.renewDeadline` and `.retryPeriod`.
+  For clusters with slow API server storage that miss the 10s renew deadline.
 
 ## [0.1.2] - 2026-11-22
 ### Changed

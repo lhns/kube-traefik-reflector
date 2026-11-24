@@ -32,6 +32,17 @@ spec:
             - --health-probe-bind-address=:8081
             - --metrics-bind-address=:8080
             - --leader-elect={{ .Values.leaderElection.enabled }}
+            {{- if .Values.leaderElection.enabled }}
+            {{- with .Values.leaderElection.leaseDuration }}
+            - --leader-election-lease-duration={{ . }}
+            {{- end }}
+            {{- with .Values.leaderElection.renewDeadline }}
+            - --leader-election-renew-deadline={{ . }}
+            {{- end }}
+            {{- with .Values.leaderElection.retryPeriod }}
+            - --leader-election-retry-period={{ . }}
+            {{- end }}
+            {{- end }}
             - --excluded-namespaces={{ join "," .Values.excludedNamespaces }}
             - --orphan-sweep-interval={{ .Values.orphanSweepInterval }}
           ports:

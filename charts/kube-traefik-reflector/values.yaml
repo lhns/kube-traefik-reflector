@@ -20,6 +20,12 @@ orphanSweepInterval: 10m
 # Leader election lets you run more than one replica safely (only one is active).
 leaderElection:
   enabled: true
+  # Timings as Go durations, e.g. "60s". Unset uses the binary's defaults (15s/10s/2s).
+  # Raise them if the API server's storage is slow and the pod crash-loops on lost leases;
+  # leaseDuration must exceed renewDeadline, which must exceed retryPeriod.
+  leaseDuration: ""
+  renewDeadline: ""
+  retryPeriod: ""
 
 serviceAccount:
   create: true
