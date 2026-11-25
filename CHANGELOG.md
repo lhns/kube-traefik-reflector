@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format is based on
 [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.0] - 2026-11-25
 ### Added
 - Leader election timings are configurable: `--leader-election-lease-duration`,
   `--leader-election-renew-deadline` and `--leader-election-retry-period` (defaults unchanged),
